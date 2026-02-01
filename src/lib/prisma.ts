@@ -1,26 +1,10 @@
-// import { PrismaClient } from '@prisma/client'
-// import { Pool } from 'pg'
-// import { PrismaPg } from '@prisma/adapter-pg'
+import { PrismaClient } from "@prisma/client";
+import { PrismaNeon } from "@prisma/adapter-neon";
 
-// const globalForPrisma = globalThis as unknown as {
-//     prisma: PrismaClient | undefined
-// }
+const connectionString = process.env.DATABASE_URL!;
 
-// const pool = new Pool({ connectionString: process.env.DATABASE_URL })
-// const adapter = new PrismaPg(pool)
+// Create a PrismaNeon adapter using plain config
+const adapter = new PrismaNeon({ connectionString });
 
-// export const prisma = globalForPrisma.prisma ?? new PrismaClient({ adapter })
-
-// if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
-
-
-
-import { PrismaClient } from '@prisma/client'
-
-const globalForPrisma = globalThis as unknown as {
-    prisma: PrismaClient | undefined
-}
-
-export const prisma = globalForPrisma.prisma ?? new PrismaClient()
-
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
+// Create the Prisma client with the adapter
+export const prisma = new PrismaClient({ adapter });
